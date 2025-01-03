@@ -1,7 +1,7 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const connectDB = require("./config/db");
-const cors = require("cors");
+const express = require('express');
+const dotenv = require('dotenv');
+const connectDB = require('./config/db');
+const cors = require('cors');
 
 // Load environment variables
 dotenv.config();
@@ -11,35 +11,23 @@ connectDB();
 
 const app = express();
 
-
 // Middleware
 app.use(cors()); // Allow CORS
-app.use(
-  cors({
-    origin: ["https://deploy-mern-1whq.vercel.app"],
-    methods: ["POST", "GET"],
-    credentials: true,
-  })
-);
 app.use(express.json()); // Body parser
 
-app.get("/", (req, res) => {
-  res.json("Hello")
-})
-
 // Routes
-const authRoutes = require("./routes/authRoutes");
-app.use("/api/auth", authRoutes);
+const authRoutes = require('./routes/authRoutes');
+app.use('/api/auth', authRoutes);
 
 // Example protected route
-const protect = require("./middlewares/authMiddleware");
-app.get("/api/home", protect, (req, res) => {
+const protect = require('./middlewares/authMiddleware');
+app.get('/api/home', protect, (req, res) => {
   res.json({ message: `Welcome, ${req.user.name}!` });
 });
 
 // Error handling middleware for undefined routes
 app.use((req, res, next) => {
-  res.status(404).json({ message: "Route not found" });
+  res.status(404).json({ message: 'Route not found' });
 });
 
 const PORT = process.env.PORT || 5000;
